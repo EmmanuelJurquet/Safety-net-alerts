@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ResidentService.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (1) (8 janv. 2022 09:56:34)</a> &gt; <a href="../../index.html" class="el_group">safety_net_alerts</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.safety_net.alerts.service</a> &gt; <span class="el_source">ResidentService.java</span></div><h1>ResidentService.java</h1><pre class="source lang-java linenums">package com.safety_net.alerts.service;
+
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.safety_net.alerts.DAO.IFireStationsDAO;
+import com.safety_net.alerts.DAO.IMedicalRecordsDAO;
+import com.safety_net.alerts.DAO.IPersonDAO;
+
+import com.safety_net.alerts.model.MedicalRecords;
+import com.safety_net.alerts.model.Persons;
+import com.safety_net.alerts.model.Resident;
+
+
+
+
+
+@Service
+<span class="fc" id="L26">public class ResidentService {</span>
+
+
+	@Autowired
+	IPersonDAO personsDAO;
+	@Autowired
+	IFireStationsDAO firestationsDAO;
+	@Autowired
+	IMedicalRecordsDAO medicalrecordsDAO;
+
+
+
+	public Resident resident(String firstName , String lastName) {
+
+<span class="nc" id="L40">		Persons persons =  personsDAO.findPerson(firstName, lastName);</span>
+<span class="nc" id="L41">		List&lt;String&gt; firestations = firestationsDAO.findStationByAddress(persons.getAddress());</span>
+<span class="nc" id="L42">		MedicalRecords medFile =  medicalrecordsDAO.findMedFile(firstName, lastName);</span>
+<span class="nc" id="L43">		Resident resident = new Resident();</span>
+
+<span class="nc" id="L45">		resident.setFirstName(firstName);</span>
+<span class="nc" id="L46">		resident.setLastName(lastName);</span>
+<span class="nc" id="L47">		resident.setAddress(persons.getAddress());</span>
+<span class="nc" id="L48">		resident.setPhone(persons.getPhone());</span>
+<span class="nc" id="L49">		resident.setStation(firestations);</span>
+<span class="nc" id="L50">		resident.setBirthday(medFile.getBirthdate());</span>
+<span class="nc" id="L51">		resident.setMedications(medFile.getMedications());</span>
+<span class="nc" id="L52">		resident.setAllergies(medFile.getAllergies());</span>
+
+<span class="nc" id="L54">		return resident;</span>
+	}
+
+	public List&lt;Resident&gt; findListOfResidentsByAddress (String address) {
+
+<span class="nc" id="L59">		List&lt;Persons&gt; personsaddress = personsDAO.findPersonsByAddress(address);</span>
+<span class="nc" id="L60">		List&lt;Resident&gt; results = new ArrayList&lt;&gt;();</span>
+
+
+<span class="nc bnc" id="L63" title="All 2 branches missed.">		for(Persons pers : personsaddress) {</span>
+
+<span class="nc" id="L65">			String firstName = pers.getFirstname();</span>
+<span class="nc" id="L66">			String lastName = pers.getLastname();</span>
+
+<span class="nc" id="L68">			results.add(resident(firstName, lastName));</span>
+
+		}
+<span class="nc" id="L71">		return results;</span>
+	}
+
+	public List &lt;List &lt;Resident&gt;&gt; findChildByAddress (String address){
+<span class="nc" id="L75">		List &lt;List &lt;Resident&gt;&gt; result  = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L76">		List &lt;Resident&gt; child = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L77">		List&lt;Resident&gt; homeCHild =  new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L78">		result.add(child);</span>
+<span class="nc" id="L79">		result.add(homeCHild);</span>
+		
+<span class="nc" id="L81">		List&lt;Persons&gt; findResidentsByAddress = personsDAO.findPersonsByAddress(address);</span>
+		
+<span class="nc bnc" id="L83" title="All 2 branches missed.">		for (Persons pers : findResidentsByAddress) {</span>
+			
+		
+<span class="nc" id="L86">			MedicalRecords medfil = medicalrecordsDAO.findMedFile(pers.getFirstname(), pers.getLastname());</span>
+<span class="nc" id="L87">			Long age =  medfil.getBirthdate().until(LocalDate.now(), ChronoUnit.YEARS);</span>
+<span class="nc" id="L88">			Resident resident= new Resident();</span>
+			// resident à remplir avec les données
+<span class="nc" id="L90">			resident.setFirstName(pers.getFirstname());</span>
+<span class="nc" id="L91">			resident.setLastName(pers.getLastname());</span>
+<span class="nc" id="L92">			resident.setBirthday(medfil.getBirthdate());</span>
+<span class="nc" id="L93">			resident.setMedications(medfil.getMedications());</span>
+<span class="nc" id="L94">			resident.setAddress(pers.getAddress());</span>
+<span class="nc" id="L95">			resident.setAllergies(medfil.getAllergies());</span>
+<span class="nc" id="L96">			resident.setPhone(pers.getPhone());</span>
+			
+<span class="nc bnc" id="L98" title="All 2 branches missed.">			if (age &lt;=18) {</span>
+<span class="nc" id="L99">				child.add(resident);</span>
+<span class="nc" id="L100">			} else {</span>
+<span class="nc" id="L101">				homeCHild.add(resident);</span>
+			}
+		}
+		
+<span class="nc" id="L105">		return result;</span>
+	}
+
+	public List&lt;Resident&gt; findListOfResidentsByFireStationNumber (String station_number){
+<span class="nc" id="L109">		List &lt;Persons&gt; persons = personsDAO.findAll();</span>
+<span class="nc" id="L110">		List&lt;String&gt; lfireStations = firestationsDAO.findAddressByStationNumber(station_number);</span>
+
+<span class="nc" id="L112">		String firstName = null;</span>
+<span class="nc" id="L113">		String lastName = null;</span>
+<span class="nc" id="L114">		Resident res = null;</span>
+
+<span class="nc" id="L116">		List&lt;Resident&gt; lresults = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		for (Persons pers : persons) {</span>
+<span class="nc" id="L119">			firstName = pers.getFirstname();</span>
+<span class="nc" id="L120">			lastName = pers.getLastname();</span>
+<span class="nc" id="L121">			res = resident(firstName,lastName);</span>
+
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		for (String address : lfireStations ) {</span>
+
+<span class="nc bnc" id="L125" title="All 2 branches missed.">			if (address.equals(res.getAddress())){		</span>
+<span class="nc" id="L126">				lresults.add(res);			</span>
+			}
+		}
+<span class="nc" id="L129">	}return lresults;	</span>
+	}
+}		
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span>java (1) (8 janv. 2022 09:56:34)</div></body></html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>JSONFireStations.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (1) (8 janv. 2022 09:56:34)</a> &gt; <a href="../../index.html" class="el_group">safety_net_alerts</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.safety_net.alerts.repository</a> &gt; <span class="el_source">JSONFireStations.java</span></div><h1>JSONFireStations.java</h1><pre class="source lang-java linenums">package com.safety_net.alerts.repository;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.boot.json.JsonParser;
+import com.safety_net.alerts.model.FireStations;
+
+
+
+
+
+
+<span class="fc" id="L21">public class JSONFireStations {</span>
+
+
+
+	public  List&lt;FireStations&gt; readFireStations () {
+
+<span class="fc" id="L27">		JSONParser jsonP = new JSONParser ();</span>
+<span class="fc" id="L28">		List&lt;FireStations&gt; lFireStations = new ArrayList&lt;&gt;();  </span>
+		try {
+<span class="fc" id="L30">			JSONObject json = (JSONObject) jsonP.parse(new FileReader (&quot;C:\\Users\\emman\\OneDrive\\Bureau\\P5_Emmanuel_Jurquet_Safety_net_alerts\\P5_01_Safety_Net_Alerts_Code\\resources\\sna.json&quot;));</span>
+<span class="fc" id="L31">			JSONArray fireStationsArray = (JSONArray) json.get(&quot;firestations&quot;);</span>
+
+<span class="fc bfc" id="L33" title="All 2 branches covered.">			for (int i = 0;i&lt;fireStationsArray.size();i++) {</span>
+<span class="fc" id="L34">				JSONObject jsonFireStations = (JSONObject) fireStationsArray.get(i);</span>
+				
+<span class="fc" id="L36">				FireStations fireStations = new FireStations();</span>
+<span class="fc" id="L37">				fireStations.setAddress(jsonFireStations.get(&quot;address&quot;).toString());</span>
+				
+<span class="fc" id="L39">				fireStations.setStation(jsonFireStations.get(&quot;station&quot;).toString());</span>
+<span class="fc" id="L40">				lFireStations.add(fireStations);</span>
+				
+			}
+
+		 
+<span class="fc" id="L45">		}</span>
+
+<span class="nc" id="L47">		catch (FileNotFoundException e) {</span>
+
+<span class="nc" id="L49">			e.printStackTrace();</span>
+
+<span class="nc" id="L51">		} catch (IOException e) {</span>
+
+<span class="nc" id="L53">			e.printStackTrace();</span>
+
+<span class="nc" id="L55">		} catch (ParseException e) { </span>
+
+<span class="nc" id="L57">			e.printStackTrace();</span>
+
+		}
+<span class="fc" id="L60">		return lFireStations;</span>
+	}
+
+}		
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span>java (1) (8 janv. 2022 09:56:34)</div></body></html>

@@ -1,0 +1,17 @@
+[
+	{
+		"Station" :1,
+			 "foyer" : [
+						{"Nom": "Jurquet", "prénom" : "Emmanuel"
+						
+
+			 
+ 
+
+
+
+
+
+
+
+]

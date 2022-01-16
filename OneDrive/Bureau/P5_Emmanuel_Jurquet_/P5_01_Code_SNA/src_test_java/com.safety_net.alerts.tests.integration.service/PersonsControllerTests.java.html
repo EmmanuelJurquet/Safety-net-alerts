@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PersonsControllerTests.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (1) (8 janv. 2022 09:56:34)</a> &gt; <a href="../../index.html" class="el_group">safety_net_alerts</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.safety_net.alerts.tests.integration.service</a> &gt; <span class="el_source">PersonsControllerTests.java</span></div><h1>PersonsControllerTests.java</h1><pre class="source lang-java linenums">package com.safety_net.alerts.tests.integration.service;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+
+import com.safety_net.alerts.model.Persons;
+
+import com.safety_net.alerts.service.PersonService;
+
+import net.minidev.json.JSONObject;
+
+
+
+@SpringBootTest
+@AutoConfigureMockMvc
+<span class="fc" id="L28">public class PersonsControllerTests {</span>
+
+	
+		@Autowired
+	    MockMvc mvc;
+		
+		@MockBean
+	    PersonService personService;
+	 	
+		@BeforeEach
+	    public void config() {
+<span class="fc" id="L39">	        List&lt;Persons&gt; lPerson = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L40">	        when(personService.list()).thenReturn(lPerson);</span>
+<span class="fc" id="L41">	    }</span>
+	
+		
+		@Test
+		void getPersons() {
+			try {
+<span class="fc" id="L47">	            this.mvc.perform(MockMvcRequestBuilders</span>
+<span class="fc" id="L48">	                    .get(&quot;/persons&quot;)</span>
+<span class="fc" id="L49">	                    .contentType(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L50">	                    .andExpect(status().isOk());</span>
+<span class="pc" id="L51">	        } catch (Exception e) {</span>
+<span class="nc" id="L52">	            System.out.println(e.getMessage());</span>
+	        }
+<span class="fc" id="L54">		}</span>
+		@Test
+		void addPersons () {
+<span class="fc" id="L57">			JSONObject object = new JSONObject ();</span>
+<span class="fc" id="L58">			object.put(&quot;firstName&quot; , &quot;Emmanuel&quot;);</span>
+<span class="fc" id="L59">			object.put(&quot;lastName&quot;, &quot;Jurquet&quot;);</span>
+<span class="fc" id="L60">			object.put(&quot;address&quot;,&quot;newaddress&quot;);</span>
+<span class="fc" id="L61">			object.put(&quot;city&quot;, &quot;culver&quot;);</span>
+<span class="fc" id="L62">			object.put(&quot;zip&quot;, &quot;7510215&quot;);</span>
+<span class="fc" id="L63">			object.put(&quot;phone&quot;, &quot;0156987465&quot;);</span>
+<span class="fc" id="L64">			object.put(&quot;email&quot;, &quot;e.jurqie@trucbnd&quot;);</span>
+
+			
+<span class="fc" id="L67">			String jsonString = object.toString();</span>
+			
+			try {
+<span class="fc" id="L70">				this.mvc.perform(MockMvcRequestBuilders</span>
+<span class="fc" id="L71">						.post(&quot;/persons&quot;)</span>
+<span class="fc" id="L72">						.content(jsonString)</span>
+<span class="fc" id="L73">						.contentType(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L74">						.andExpect(status().isOk());</span>
+<span class="pc" id="L75">				}catch(Exception e ) {</span>
+<span class="nc" id="L76">					System.out.println(e.getMessage());</span>
+				}
+			
+		
+<span class="fc" id="L80">		}	</span>
+		@Test 
+			
+		void modifyPersons() {
+			
+			
+<span class="fc" id="L86">			JSONObject object = new JSONObject ();</span>
+<span class="fc" id="L87">			object.put(&quot;firstName&quot; , &quot;Emmanuel&quot;);</span>
+<span class="fc" id="L88">			object.put(&quot;lastName&quot;, &quot;Jurquet&quot;);</span>
+<span class="fc" id="L89">			object.put(&quot;address&quot;,&quot;newaddress&quot;);</span>
+<span class="fc" id="L90">			object.put(&quot;city&quot;, &quot;culver&quot;);</span>
+<span class="fc" id="L91">			object.put(&quot;zip&quot;, &quot;7510215&quot;);</span>
+<span class="fc" id="L92">			object.put(&quot;phone&quot;, &quot;0156987465&quot;);</span>
+<span class="fc" id="L93">			object.put(&quot;email&quot;, &quot;e.jurqie@trucbnd&quot;);</span>
+			
+			
+<span class="fc" id="L96">			String jsonString = object.toString();</span>
+			
+			try {
+<span class="fc" id="L99">				this.mvc.perform(MockMvcRequestBuilders</span>
+<span class="fc" id="L100">						.put(&quot;/persons&quot;)</span>
+<span class="fc" id="L101">						.content(jsonString)</span>
+<span class="fc" id="L102">						.contentType(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L103">						.andExpect(status().isOk());</span>
+<span class="pc" id="L104">				}catch(Exception e ) {</span>
+<span class="nc" id="L105">					System.out.println(e.getMessage());</span>
+				}
+<span class="fc" id="L107">		}</span>
+		
+		@Test
+		void removePersons() {
+			
+			try {
+<span class="fc" id="L113">				this.mvc.perform(MockMvcRequestBuilders</span>
+<span class="fc" id="L114">						.delete(&quot;/persons?firstName=Jacob&amp;lastName=Boyd&quot;)</span>
+<span class="fc" id="L115">						.contentType(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L116">						.andExpect(status().isOk());</span>
+<span class="pc" id="L117">				}catch(Exception e ) {</span>
+<span class="nc" id="L118">					System.out.println(e.getMessage());</span>
+				}
+<span class="fc" id="L120">		}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span>java (1) (8 janv. 2022 09:56:34)</div></body></html>

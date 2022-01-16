@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FireStationsControllerTests.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (1) (8 janv. 2022 09:56:34)</a> &gt; <a href="../../index.html" class="el_group">safety_net_alerts</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.safety_net.alerts.tests.integration.service</a> &gt; <span class="el_source">FireStationsControllerTests.java</span></div><h1>FireStationsControllerTests.java</h1><pre class="source lang-java linenums">package com.safety_net.alerts.tests.integration.service;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import com.safety_net.alerts.model.FireStations;
+import com.safety_net.alerts.service.FireStationsService;
+
+
+import net.minidev.json.JSONObject;
+
+@AutoConfigureMockMvc
+@SpringBootTest
+<span class="fc" id="L27">public class FireStationsControllerTests {</span>
+
+	@Autowired
+    MockMvc mvc;
+	
+	@MockBean
+    FireStationsService firestationsServices;
+	
+	@BeforeEach
+    public void config() {
+<span class="fc" id="L37">        List&lt;FireStations&gt; lfire= new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L38">        when(firestationsServices.list()).thenReturn(lfire);</span>
+<span class="fc" id="L39">    }</span>
+	
+	@Test
+	void getFireStations() {
+		try {
+<span class="fc" id="L44">            this.mvc.perform(MockMvcRequestBuilders</span>
+<span class="fc" id="L45">                    .get(&quot;/firestations&quot;)</span>
+<span class="fc" id="L46">                    .contentType(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L47">                    .andExpect(status().isOk());</span>
+<span class="pc" id="L48">        } catch (Exception e) {</span>
+<span class="nc" id="L49">            System.out.println(e.getMessage());</span>
+        }
+<span class="fc" id="L51">	}</span>
+	@Test
+	void addFirestations () {
+		
+<span class="fc" id="L55">		JSONObject object = new JSONObject ();</span>
+<span class="fc" id="L56">		object.put(&quot;address&quot;,&quot;1509 culver st&quot;);</span>
+<span class="fc" id="L57">		object.put(&quot;station &quot;,&quot;5&quot;);</span>
+
+		
+<span class="fc" id="L60">		String jsonString = object.toString();</span>
+		
+		
+		try {
+<span class="fc" id="L64">			this.mvc.perform(MockMvcRequestBuilders</span>
+<span class="fc" id="L65">					.post(&quot;/firestations&quot;)</span>
+<span class="fc" id="L66">					.content(jsonString)</span>
+<span class="fc" id="L67">					.contentType(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L68">					.andExpect(status().isOk());</span>
+<span class="pc" id="L69">			}catch(Exception e ) {</span>
+<span class="nc" id="L70">				System.out.println(e.getMessage());</span>
+			}
+		
+	
+<span class="fc" id="L74">	}	</span>
+	@Test 
+	void modifyFireStations() {
+		
+<span class="fc" id="L78">		JSONObject object = new JSONObject ();</span>
+<span class="fc" id="L79">		object.put(&quot;address&quot;,&quot;new address&quot;);</span>
+<span class="fc" id="L80">		object.put(&quot;station &quot;,&quot;4&quot;);</span>
+		
+		
+<span class="fc" id="L83">		String jsonString = object.toString();</span>
+		try {
+<span class="fc" id="L85">			this.mvc.perform(MockMvcRequestBuilders</span>
+<span class="fc" id="L86">					.put(&quot;/firestations&quot;)</span>
+<span class="fc" id="L87">					.content(jsonString)</span>
+<span class="fc" id="L88">					.contentType(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L89">					.andExpect(status().isOk());</span>
+<span class="pc" id="L90">			}catch(Exception e ) {</span>
+<span class="nc" id="L91">				System.out.println(e.getMessage());</span>
+			}
+<span class="fc" id="L93">	}</span>
+	
+	@Test
+	void removeFireStations() {
+		
+		try {
+<span class="fc" id="L99">			this.mvc.perform(MockMvcRequestBuilders</span>
+<span class="fc" id="L100">					.delete(&quot;/firestations?address=new place&amp;station=5&quot;)</span>
+<span class="fc" id="L101">					.contentType(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L102">					.andExpect(status().isOk());</span>
+<span class="pc" id="L103">			}catch(Exception e ) {</span>
+<span class="nc" id="L104">				System.out.println(e.getMessage());</span>
+			}
+<span class="fc" id="L106">	}</span>
+}
+
+
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span>java (1) (8 janv. 2022 09:56:34)</div></body></html>

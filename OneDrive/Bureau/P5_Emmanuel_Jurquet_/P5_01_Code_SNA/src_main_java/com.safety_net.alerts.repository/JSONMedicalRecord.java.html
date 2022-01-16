@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>JSONMedicalRecord.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (1) (8 janv. 2022 09:56:34)</a> &gt; <a href="../../index.html" class="el_group">safety_net_alerts</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.safety_net.alerts.repository</a> &gt; <span class="el_source">JSONMedicalRecord.java</span></div><h1>JSONMedicalRecord.java</h1><pre class="source lang-java linenums">package com.safety_net.alerts.repository;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.safety_net.alerts.model.MedicalRecords;
+
+
+<span class="fc" id="L20">public class JSONMedicalRecord {</span>
+
+	public List&lt;MedicalRecords&gt; readMedicalRecords() {
+
+<span class="fc" id="L24">		 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;MM/dd/yyyy&quot;);</span>
+		
+<span class="fc" id="L26">			JSONParser jsonP = new JSONParser();</span>
+<span class="fc" id="L27">			List &lt;MedicalRecords&gt; lMedicalRecords = new ArrayList&lt;&gt;();</span>
+	try {
+				
+<span class="fc" id="L30">				JSONObject jsonO = (JSONObject) jsonP.parse(new FileReader(&quot;C:\\Users\\emman\\OneDrive\\Bureau\\P5_Emmanuel_Jurquet_Safety_net_alerts\\P5_01_Safety_Net_Alerts_Code\\resources\\sna.json&quot;));</span>
+<span class="fc" id="L31">				JSONArray medRArray = (JSONArray) jsonO.get(&quot;medicalrecords&quot;);</span>
+				
+<span class="fc bfc" id="L33" title="All 2 branches covered.">				for (int i = 0; i &lt; medRArray.size();i++) {</span>
+			
+<span class="fc" id="L35">				JSONObject jsonMedicRec = (JSONObject) medRArray.get(i);</span>
+				
+<span class="fc" id="L37">				MedicalRecords medicRecords = new MedicalRecords();</span>
+				
+<span class="fc" id="L39">				String firstName = jsonMedicRec.get(&quot;firstName&quot;).toString();</span>
+<span class="fc" id="L40">				medicRecords.setFirstname(firstName);</span>
+					
+<span class="fc" id="L42">				medicRecords.setLastname(jsonMedicRec.get(&quot;lastName&quot;).toString());</span>
+<span class="fc" id="L43">				LocalDate localDate = LocalDate.parse(jsonMedicRec.get(&quot;birthdate&quot;).toString(), formatter);</span>
+<span class="fc" id="L44">				medicRecords.setBirthdate(localDate);</span>
+				
+<span class="fc" id="L46">				String medics = jsonMedicRec.get(&quot;medications&quot;).toString().replaceAll(&quot;\&quot;&quot;,&quot;&quot;);</span>
+<span class="fc" id="L47">				String[] result=  medics.split(&quot;,&quot;);</span>
+<span class="fc" id="L48">				List&lt;String&gt; lmedics = new ArrayList&lt;&gt;(Arrays.asList(result));</span>
+<span class="fc" id="L49">				medicRecords.setMedications(lmedics);</span>
+<span class="fc" id="L50">				String allergies = jsonMedicRec.get(&quot;allergies&quot;).toString().replaceAll(&quot;\&quot;&quot;,&quot;&quot;);</span>
+<span class="fc" id="L51">				String[] results = allergies.split(&quot;,&quot;);</span>
+<span class="fc" id="L52">				List&lt;String&gt; lallergies =  new ArrayList&lt;&gt;(Arrays.asList(results));</span>
+				
+<span class="fc" id="L54">				medicRecords.setAllergies(lallergies);</span>
+				
+<span class="fc" id="L56">				lMedicalRecords.add(medicRecords);</span>
+				
+				}
+<span class="fc" id="L59">			}</span>
+
+<span class="nc" id="L61">			catch (FileNotFoundException e) {</span>
+
+<span class="nc" id="L63">				e.printStackTrace();</span>
+
+<span class="nc" id="L65">			} catch (IOException e) {</span>
+
+<span class="nc" id="L67">				e.printStackTrace();</span>
+
+<span class="nc" id="L69">			} catch (ParseException e) { </span>
+
+<span class="nc" id="L71">				e.printStackTrace();</span>
+
+			}
+<span class="fc" id="L74">			return lMedicalRecords;</span>
+	}
+	
+}
+
+	
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span>java (1) (8 janv. 2022 09:56:34)</div></body></html>

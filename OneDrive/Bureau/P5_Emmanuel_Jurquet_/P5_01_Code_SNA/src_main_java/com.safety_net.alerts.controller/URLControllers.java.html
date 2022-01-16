@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>URLControllers.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (1) (8 janv. 2022 09:56:34)</a> &gt; <a href="../../index.html" class="el_group">safety_net_alerts</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.safety_net.alerts.controller</a> &gt; <span class="el_source">URLControllers.java</span></div><h1>URLControllers.java</h1><pre class="source lang-java linenums">package com.safety_net.alerts.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.safety_net.alerts.model.MedicalRecords;
+import com.safety_net.alerts.model.Persons;
+import com.safety_net.alerts.model.Resident;
+import com.safety_net.alerts.service.ResidentService;
+import com.safety_net.alerts.service.UrlsServices;
+
+@RestController
+<span class="fc" id="L20">public class URLControllers {</span>
+
+
+	@Autowired
+	private	UrlsServices  urlsServices;
+	@Autowired
+	private ResidentService rServices;
+	
+<span class="fc" id="L28">	 private static final Logger logger = LogManager.getLogger(URLControllers.class);</span>
+
+	@GetMapping (value = &quot;/firestation&quot;)
+	public Map&lt;String, Object&gt; findPersonsByStationNumber (@RequestParam String stationNumber){
+<span class="fc" id="L32">		logger.info(&quot;Persons find by FireStation Number {}&quot;, stationNumber);</span>
+<span class="fc" id="L33">		Map&lt;String, Object&gt; lresult = urlsServices.findPersonsByStationNumber(stationNumber);</span>
+<span class="fc" id="L34">		logger.info(lresult);</span>
+<span class="fc" id="L35">		return lresult;</span>
+	}
+
+	@GetMapping (value = &quot;/childAlert&quot;)
+	public List&lt;List&lt;Resident&gt;&gt; findChildByAddress (@RequestParam String address) {
+<span class="fc" id="L40">		logger.info(&quot;Childs find by Address {}&quot;, address);</span>
+<span class="fc" id="L41">		List&lt;List&lt;Resident&gt;&gt; lresults = rServices.findChildByAddress(address);</span>
+<span class="fc" id="L42">		logger.info(lresults);</span>
+<span class="fc" id="L43">		return lresults;</span>
+	}
+
+	@GetMapping (value = &quot;/phoneAlert&quot;)
+	public List&lt;String&gt;findPhoneByFireStationNumber (@RequestParam String firestation){
+<span class="fc" id="L48">		logger.info(&quot;Phone's persons find by FireStation Number {}&quot;, firestation);</span>
+<span class="fc" id="L49">		List&lt;String&gt; lresults = urlsServices.findResidentsPhoneByStationNumber(firestation);</span>
+<span class="fc" id="L50">		logger.info(lresults);</span>
+<span class="fc" id="L51">		return lresults;</span>
+	}
+
+	@GetMapping (value =&quot;/fire&quot; )
+	public List&lt;Resident&gt; findListOfResidentsByAddress (@RequestParam String address){
+<span class="fc" id="L56">		logger.info(&quot;Residents find by Address {}&quot;,address);</span>
+<span class="fc" id="L57">		List&lt;Resident&gt; lresults =  rServices.findListOfResidentsByAddress(address);</span>
+<span class="fc" id="L58">		logger.info(lresults);</span>
+<span class="fc" id="L59">		return lresults;</span>
+	}
+
+	@GetMapping ( value = &quot;/flood/stations&quot;)
+	public List&lt;Resident&gt; findListOfResidentsByFireStationNumber (@RequestParam String station_number){
+<span class="fc" id="L64">		logger.info(&quot;List of Residents find by FireStationNumber&quot;,station_number);</span>
+<span class="fc" id="L65">		List&lt;Resident&gt; lresults =  rServices.findListOfResidentsByFireStationNumber(station_number);</span>
+<span class="fc" id="L66">		logger.info(lresults);</span>
+<span class="fc" id="L67">		return lresults;	</span>
+	}
+
+	@GetMapping (value= &quot;/personInfo&quot;)
+	public Resident resident(@RequestParam String firstName , String lastName) {
+<span class="fc" id="L72">		logger.info(&quot;Find a Resident by Name&quot;,firstName, lastName);</span>
+<span class="fc" id="L73">		Resident result = rServices.resident(firstName, lastName);</span>
+<span class="fc" id="L74">		logger.info(result);</span>
+<span class="fc" id="L75">		return result;</span>
+	}
+
+	@GetMapping (value = &quot;/communityEmail&quot;)
+	public List&lt;String&gt; findEmailCity (@RequestParam String city) {
+<span class="fc" id="L80">		logger.info(&quot;Return all Emails's Residents {}&quot;,city);</span>
+<span class="fc" id="L81">		List&lt;String&gt; lresults = urlsServices.findEmail(city);</span>
+<span class="fc" id="L82">		logger.info(lresults);</span>
+<span class="fc" id="L83">		return lresults;</span>
+		
+	}
+}
+
+
+
+
+	
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span>java (1) (8 janv. 2022 09:56:34)</div></body></html>

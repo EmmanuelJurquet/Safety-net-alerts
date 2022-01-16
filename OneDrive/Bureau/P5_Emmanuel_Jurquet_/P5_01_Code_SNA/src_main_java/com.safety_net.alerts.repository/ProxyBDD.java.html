@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ProxyBDD.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (1) (8 janv. 2022 09:56:34)</a> &gt; <a href="../../index.html" class="el_group">safety_net_alerts</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.safety_net.alerts.repository</a> &gt; <span class="el_source">ProxyBDD.java</span></div><h1>ProxyBDD.java</h1><pre class="source lang-java linenums">package com.safety_net.alerts.repository;
+
+import java.util.List;
+import com.safety_net.alerts.model.FireStations;
+import com.safety_net.alerts.model.MedicalRecords;
+import com.safety_net.alerts.model.Persons;
+
+<span class="fc" id="L8">public class ProxyBDD {</span>
+
+	private List&lt;Persons&gt; lpersons;
+
+	private List&lt;MedicalRecords&gt; lMedicalRecords;
+
+	private List&lt;FireStations&gt; lFireStations;
+
+	public void loadData(final String filePath) {
+<span class="fc" id="L17">		loadPersons(filePath);</span>
+<span class="fc" id="L18">		loadFireStations(filePath);</span>
+<span class="fc" id="L19">		loadMedicalRecords(filePath);</span>
+<span class="fc" id="L20">	}</span>
+	
+	private void loadPersons(final String filePath) {
+<span class="fc" id="L23">		JSONPersons jsonPersons = new JSONPersons();</span>
+<span class="fc" id="L24">		lpersons = jsonPersons.readPersons();</span>
+<span class="fc" id="L25">	}</span>
+	
+	private void loadFireStations (final String filePath) {
+		
+<span class="fc" id="L29">		JSONFireStations jsonFireStations = new JSONFireStations();</span>
+<span class="fc" id="L30">		lFireStations = jsonFireStations.readFireStations();</span>
+		
+<span class="fc" id="L32">	}</span>
+	
+	private void loadMedicalRecords (final String filePath) {
+		
+<span class="fc" id="L36">		JSONMedicalRecord jsonMedicalRecords = new JSONMedicalRecord();</span>
+<span class="fc" id="L37">		lMedicalRecords = jsonMedicalRecords.readMedicalRecords();</span>
+<span class="fc" id="L38">	}</span>
+
+	public List&lt;Persons&gt; getLpersons() {
+<span class="fc" id="L41">		return lpersons;</span>
+	}
+
+	public List&lt;MedicalRecords&gt; getlMedicalRecords() {
+<span class="fc" id="L45">		return lMedicalRecords;</span>
+	}
+
+	public List&lt;FireStations&gt; getlFireStations() {
+<span class="fc" id="L49">		return lFireStations;</span>
+	}
+}
+	
+
+	
+
+	
+
+	
+
+			
+
+	
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span>java (1) (8 janv. 2022 09:56:34)</div></body></html>
